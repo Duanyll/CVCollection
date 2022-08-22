@@ -17,13 +17,13 @@ namespace CVModels
 
         public async Task<byte[]> PreprocessImageAsync(byte[] image)
         {
-            await AwaitLastTaskAsync().ConfigureAwait(false);
+            await AwaitLastTaskAsync();
             return await OnPreprocessImage(image);
         }
 
         public async Task<byte[]> ProcessImageAsync(byte[] prepocessedImage)
         {
-            await AwaitLastTaskAsync().ConfigureAwait(false);
+            await AwaitLastTaskAsync();
             return await OnProcessImage(prepocessedImage);
         }
     }

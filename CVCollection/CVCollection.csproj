@@ -57,4 +57,16 @@
 	  <ProjectReference Include="..\CVModels\CVModels.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Compile Update="Models\ImageProcessingPageLandscape.xaml.cs">
+	    <DependentUpon>ImageProcessingPageLandscape.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Models\ImageProcessingPageLandscape.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
 </Project>

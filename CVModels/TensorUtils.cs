@@ -39,14 +39,13 @@ namespace CVModels
             int width = tensor.Dimensions[3];
 
             using var bitmap = new SKBitmap(width, height);
+            byte clamp(float x) => (byte)(Math.Min(Math.Max(x, 0), 1) * 255);
             for (int y = 0; y < height; y++)
             {
                 for (int x = 0; x < width; x++)
                 {
                     var col = new SKColor(
-                        (byte)(tensor[0, 0, y, x] * 255f),
-                        (byte)(tensor[0, 1, y, x] * 255f),
-                        (byte)(tensor[0, 2, y, x] * 255f));
+                        clamp(tensor[0, 0, y, x]), clamp(tensor[0, 1, y, x]), clamp(tensor[0, 2, y, x]));
                     bitmap.SetPixel(x, y, col);
                 }
             }
