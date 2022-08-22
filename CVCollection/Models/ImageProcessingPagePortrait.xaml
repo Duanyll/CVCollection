@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CVCollection.Models.ImageProcessingPagePortrait"
+             xmlns:local="clr-namespace:CVCollection.Models"
+             x:DataType="local:ImageProcessingViewModel"
+             Title="{Binding Title}">
+    <Grid Padding="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid Padding="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Label Text="Input" FontSize="Header" Grid.ColumnSpan="3" Margin="5"/>
+            <Button Text="Sample" Grid.Row="1" Grid.Column="0" Command="{Binding ChooseSampleImageCommand}" Margin="5"/>
+            <Button Text="Pick Image" Grid.Row="1" Grid.Column="1" Command="{Binding PickImageCommand}" Margin="5"/>
+            <Button Text="Take Photo" Grid.Row="1" Grid.Column="2" Command="{Binding TakePhotoCommand}" Margin="5"/>
+            <Image
+                Grid.Row="2"
+                Grid.ColumnSpan="3"
+                Source="{Binding InputImage, Converter={StaticResource ByteArrayToImage}}"
+                HorizontalOptions="Center" />
+        </Grid>
+        <Grid Grid.Row="1" Padding="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Label Text="Output" FontSize="Header" Grid.ColumnSpan="3" Margin="5"/>
+            <Image
+                Grid.Row="1"
+                Grid.ColumnSpan="2"
+                Source="{Binding OutputImage, Converter={StaticResource ByteArrayToImage}}"
+                HorizontalOptions="Center" />
+            <Button Text="Process" Grid.Row="2" Grid.Column="0" Command="{Binding ProcessImageCommand}" Margin="5"/>
+            <Button Text="Save" Grid.Row="2" Grid.Column="1" Command="{Binding SaveImageCommand}" Margin="5"/>
+        </Grid>
+        <ActivityIndicator
+                Grid.RowSpan="2"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="CenterAndExpand"
+                IsEnabled="{Binding IsBusy}"
+                IsRunning="{Binding IsBusy}"/>
+    </Grid>
+</ContentPage>

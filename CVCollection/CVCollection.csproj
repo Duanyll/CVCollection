@@ -67,6 +67,9 @@
 	  <MauiXaml Update="Models\ImageProcessingPageLandscape.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Models\ImageProcessingPagePortrait.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 </Project>
