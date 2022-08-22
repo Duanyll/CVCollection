@@ -48,4 +48,13 @@
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.12.1" />
+	  <PackageReference Include="SkiaSharp" Version="2.88.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\CVModels\CVModels.csproj" />
+	</ItemGroup>
+
 </Project>
