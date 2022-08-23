@@ -92,9 +92,18 @@ namespace CVCollection.Models
                 finally { IsBusy = false; }
             }, () => !IsBusy && IsInputReady);
 
-            SaveImageCommand = new Command(() =>
+            SaveImageCommand = new Command(async () =>
             {
-                App.AlertSvc.ShowAlert("Oops!", "Not implemented yet.");
+                try
+                {
+                    IsBusy = true;
+                    await Service.MediaService.SaveImageBytesToGallery(OutputImage, $"{modelName}-{DateTime.Now:yyyy-MM-dd-hh-mm-ss}.png");
+                }
+                catch (Exception ex)
+                {
+                    App.AlertSvc.ShowAlert("Oops!", ex.Message);
+                }
+                finally { IsBusy = false; }
             }, () => !IsBusy && IsOutputReady);
 
             PropertyChanged += (_, _) =>

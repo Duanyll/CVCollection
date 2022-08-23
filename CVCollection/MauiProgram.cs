@@ -1,4 +1,6 @@
-﻿namespace CVCollection;
+﻿using CVCollection.Service;
+
+namespace CVCollection;
 
 public static class MauiProgram
 {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CVCollection;
+namespace CVCollection.Service;
 
 public interface IAlertService
 {
