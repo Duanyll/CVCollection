@@ -50,8 +50,8 @@ namespace CVCollection.Models
         }
         public ImageProcessingViewModel(string modelName)
         {
-            Title = modelName;
-            modelInfo = CVModels.Models.GetModelInfo(modelName);
+            modelInfo = CVModels.ModelList.GetModelInfo(modelName);
+            Title = modelInfo.DisplayName;
 
             Command getInputCommand(Func<Task<byte[]>> getOriginalImage)
             {

@@ -6,31 +6,107 @@ using System.Threading.Tasks;
 
 namespace CVModels
 {
-    public enum ModelType
+    public enum ModelIOType
     {
-        ImageProcessing
+        ImageProcessing,
+        ImageClassification,
+        TargetDetection
     }
     public class ModelInfo
     {
-        public string Name { get; set; }
-        public ModelType ModelType { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string DisplayName { get; set; } = string.Empty;
+        public ModelIOType ModelType { get; set; }
         public bool IsLocal { get; set; }
-        public string Description { get; set; }
-        public string SampleImage { get; set; }
-        public Type Type { get; set; }
+        public string? Description { get; set; }
+        public string? SampleImage { get; set; } = null;
+        public Type? Type { get; set; } = null;
     }
-    public static class Models
+    public static class ModelList
     {
         static Dictionary<string, ModelInfo> info = new()
         {
-            {"Derain", new ModelInfo() {
-                Name = "Derain",
-                ModelType = ModelType.ImageProcessing,
-                IsLocal = true,
-                Description = "Single Image Deraining via CNN",
-                SampleImage = "derain.jpg",
-                Type = typeof(LocalModels.Derain)
-            }}
+            {
+                "Derain", 
+                new ModelInfo() 
+                {
+                    Name = "Derain",
+                    DisplayName = "Image Deraining",
+                    ModelType = ModelIOType.ImageProcessing,
+                    IsLocal = true,
+                    Description = "Removes rain streaks from image",
+                    SampleImage = "derain.jpg",
+                    Type = typeof(LocalModels.Derain)
+                }
+            },
+            {
+                "Dehaze",
+                new ModelInfo()
+                {
+                    Name = "Dehaze",
+                    DisplayName = "Image Dehazing",
+                    ModelType = ModelIOType.ImageProcessing,
+                    IsLocal = false,
+                    Description = "Remove haze from image",
+                }
+            },
+            {
+                "Restore",
+                new ModelInfo()
+                {
+                    Name = "Restore",
+                    DisplayName = "Image Restoration",
+                    ModelType = ModelIOType.ImageProcessing,
+                    IsLocal = false,
+                    Description = "Lorem ipsum."
+                }
+            },
+            {
+                "Enhance",
+                new ModelInfo()
+                {
+                    Name = "Enhance",
+                    DisplayName = "Image Enhancement",
+                    ModelType = ModelIOType.ImageProcessing,
+                    IsLocal = false,
+                    Description = "Lorem ipsum."
+                }
+            },
+            {
+                "Demoire",
+                new ModelInfo()
+                {
+                    Name = "Demoire",
+                    DisplayName = "Image Demoireing",
+                    ModelType = ModelIOType.ImageProcessing,
+                    IsLocal = false,
+                    Description = "Lorem ipsum."
+                }
+            },
+
+            {
+                "ResNet",
+                new ModelInfo()
+                {
+                    Name = "ResNet",
+                    DisplayName = "ImageNet Classification",
+                    ModelType = ModelIOType.ImageClassification,
+                    IsLocal = true,
+                    Description = "Classification with ResNet"
+                }
+            },
+
+            {
+                "Ultraface",
+                new ModelInfo()
+                {
+                    Name = "Ultraface",
+                    DisplayName = "Face Recognition",
+                    ModelType = ModelIOType.TargetDetection,
+                    IsLocal = true,
+                    Description = "Fast Face Recognition with Ultraface"
+                }
+            }
         };
 
         public static IEnumerable<ModelInfo> GetAllModels()
