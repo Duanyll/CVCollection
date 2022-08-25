@@ -3,26 +3,25 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Local\OnnxPackages\derain_se.onnx" />
+    <None Remove="SampleImages\demoire.jpg" />
     <None Remove="SampleImages\derain.jpg" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Local\OnnxPackages\derain_se.onnx" />
+    <EmbeddedResource Include="SampleImages\demoire.jpg" />
     <EmbeddedResource Include="SampleImages\derain.jpg" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.12.1" />
+    <PackageReference Include="RestSharp" Version="108.0.1" />
     <PackageReference Include="SkiaSharp" Version="2.88.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Remote\" />
   </ItemGroup>
 
 </Project>

@@ -80,7 +80,9 @@ namespace CVModels
                     DisplayName = "Image Demoireing",
                     ModelType = ModelIOType.ImageProcessing,
                     IsLocal = false,
-                    Description = "Lorem ipsum."
+                    Description = "Lorem ipsum.",
+                    SampleImage = "demoire.jpg",
+                    Type = typeof(Remote.Demoire)
                 }
             },
 
