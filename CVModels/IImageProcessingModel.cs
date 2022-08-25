@@ -11,6 +11,6 @@ namespace CVModels
         string Name { get; }
         
         Task<byte[]> PreprocessImageAsync(byte[] image);
-        Task<byte[]> ProcessImageAsync(byte[] prepocessedImage);
+        Task<byte[]> ProcessImageAsync(byte[] prepocessedImage, IProgress<string> progress = null);
     }
 }

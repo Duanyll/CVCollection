@@ -52,11 +52,20 @@
                 Source="{Binding OutputImage, Converter={StaticResource ByteArrayToImage}}"
                 HorizontalOptions="Center" />
         </Grid>
-        <ActivityIndicator
-                Grid.ColumnSpan="2"
-                HorizontalOptions="CenterAndExpand"
-                VerticalOptions="CenterAndExpand"
-                IsEnabled="{Binding IsBusy}"
-                IsRunning="{Binding IsBusy}"/>
+        <Frame Grid.ColumnSpan="2"
+               HorizontalOptions="Center"
+               VerticalOptions="Center"
+               IsVisible="{Binding IsBusy}"
+               MinimumWidthRequest="200"
+               Padding="10">
+            <VerticalStackLayout>
+                <ActivityIndicator
+                    IsEnabled="{Binding IsBusy}"
+                    IsRunning="{Binding IsBusy}"
+                    HorizontalOptions="Center"/>
+                <Label Text="{Binding ProgressText}" HorizontalOptions="Center"/>
+            </VerticalStackLayout>
+        </Frame>
+        
     </Grid>
 </ContentPage>

@@ -50,11 +50,19 @@
             <Button Text="Process" Grid.Row="2" Grid.Column="0" Command="{Binding ProcessImageCommand}" Margin="5"/>
             <Button Text="Save" Grid.Row="2" Grid.Column="1" Command="{Binding SaveImageCommand}" Margin="5"/>
         </Grid>
-        <ActivityIndicator
-                Grid.RowSpan="2"
-                HorizontalOptions="CenterAndExpand"
-                VerticalOptions="CenterAndExpand"
-                IsEnabled="{Binding IsBusy}"
-                IsRunning="{Binding IsBusy}"/>
+        <Frame Grid.RowSpan="2"
+               HorizontalOptions="Center"
+               VerticalOptions="Center"
+               IsVisible="{Binding IsBusy}"
+               MinimumWidthRequest="200"
+               Padding="10">
+            <VerticalStackLayout>
+                <ActivityIndicator
+                    IsEnabled="{Binding IsBusy}"
+                    IsRunning="{Binding IsBusy}"
+                    HorizontalOptions="Center"/>
+                <Label Text="{Binding ProgressText}" HorizontalOptions="Center"/>
+            </VerticalStackLayout>
+        </Frame>
     </Grid>
 </ContentPage>

@@ -48,6 +48,13 @@ namespace CVCollection.Models
                 IsOutputReady = (value != null);
             }
         }
+
+        string _progressText = string.Empty;
+        public string ProgressText
+        {
+            get => _progressText;
+            set => SetProperty(ref _progressText, value);
+        }
         public ImageProcessingViewModel(string modelName)
         {
             modelInfo = CVModels.ModelList.GetModelInfo(modelName);
@@ -59,9 +66,13 @@ namespace CVCollection.Models
                 {
                     try
                     {
+                        ProgressText = "Loading Image";
                         IsBusy = true;
                         var original = await getOriginalImage();
-                        InputImage = await Model.PreprocessImageAsync(original);
+                        if (original != null)
+                        {
+                            InputImage = await Model.PreprocessImageAsync(original);
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -70,6 +81,7 @@ namespace CVCollection.Models
                     finally
                     {
                         IsBusy = false;
+                        ProgressText = string.Empty;
                     }
                 }, () => !IsBusy);
             }
@@ -82,20 +94,25 @@ namespace CVCollection.Models
             {
                 try
                 {
+                    ProgressText = "Initiating";
                     IsBusy = true;
-                    OutputImage = await Model.ProcessImageAsync(InputImage);
+                    OutputImage = await Model.ProcessImageAsync(InputImage, new Progress<string>(str => ProgressText = str));
                 }
                 catch (Exception ex)
                 {
                     App.AlertSvc.ShowAlert("Oops!", ex.Message);
                 }
-                finally { IsBusy = false; }
+                finally { 
+                    IsBusy = false;
+                    ProgressText = string.Empty;
+                }
             }, () => !IsBusy && IsInputReady);
 
             SaveImageCommand = new Command(async () =>
             {
                 try
                 {
+                    ProgressText = "Saving Image";
                     IsBusy = true;
                     await Service.MediaService.SaveImageBytesToGallery(OutputImage, $"{modelName}-{DateTime.Now:yyyy-MM-dd-hh-mm-ss}.png");
                 }
@@ -103,7 +120,10 @@ namespace CVCollection.Models
                 {
                     App.AlertSvc.ShowAlert("Oops!", ex.Message);
                 }
-                finally { IsBusy = false; }
+                finally { 
+                    IsBusy = false;
+                    ProgressText = string.Empty;
+                }
             }, () => !IsBusy && IsOutputReady);
 
             PropertyChanged += (_, _) =>

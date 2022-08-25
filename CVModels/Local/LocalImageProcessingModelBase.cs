@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CVModels
+namespace CVModels.Local
 {
     public abstract class LocalImageProcessingModelBase : LocalModelBase, IImageProcessingModel
     {
@@ -13,7 +13,7 @@ namespace CVModels
         }
 
         protected abstract Task<byte[]> OnPreprocessImage(byte[] image);
-        protected abstract Task<byte[]> OnProcessImage(byte[] image);
+        protected abstract Task<byte[]> OnProcessImage(byte[] image, IProgress<string> progress);
 
         public async Task<byte[]> PreprocessImageAsync(byte[] image)
         {
@@ -21,10 +21,10 @@ namespace CVModels
             return await OnPreprocessImage(image);
         }
 
-        public async Task<byte[]> ProcessImageAsync(byte[] prepocessedImage)
+        public async Task<byte[]> ProcessImageAsync(byte[] prepocessedImage, IProgress<string> progress = null)
         {
             await AwaitLastTaskAsync();
-            return await OnProcessImage(prepocessedImage);
+            return await OnProcessImage(prepocessedImage, progress);
         }
     }
 }

@@ -36,7 +36,7 @@ namespace CVModels
                     IsLocal = true,
                     Description = "Removes rain streaks from image",
                     SampleImage = "derain.jpg",
-                    Type = typeof(LocalModels.Derain)
+                    Type = typeof(Local.Derain)
                 }
             },
             {
