@@ -9,7 +9,7 @@ namespace CVModels.Remote
 {
     public abstract class RemoteImageProcessingModelBase : IImageProcessingModel
     {
-        const string BaseUrl = "https://example.com";
+        const string BaseUrl = "http://localhost:8888";
         public string Name { get; }
         string RemoteModelName { get; }
         RestClient Client { get; }

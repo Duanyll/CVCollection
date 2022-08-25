@@ -18,9 +18,9 @@ namespace CVModels
         public string DisplayName { get; set; } = string.Empty;
         public ModelIOType ModelType { get; set; }
         public bool IsLocal { get; set; }
-        public string? Description { get; set; }
-        public string? SampleImage { get; set; } = null;
-        public Type? Type { get; set; } = null;
+        public string Description { get; set; }
+        public string SampleImage { get; set; } = null;
+        public Type Type { get; set; } = null;
     }
     public static class ModelList
     {
