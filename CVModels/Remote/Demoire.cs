@@ -9,10 +9,9 @@ namespace CVModels.Remote
     public class Demoire : RemoteImageProcessingModelBase
     {
         public Demoire() : base("Demoire", "demoire") { }
-        const int RequiredHeight = 1080;
-        const int RequiredWidth = 1920;
+        const int SizeLimit = 1920;
 
         protected override Task<byte[]> OnPreprocessImage(byte[] image)
-            => Task.Run(() => SkiaSharpUtils.ResizeToDesiredSize(image, RequiredWidth, RequiredHeight));
+            => Task.Run(() => SkiaSharpUtils.ZoomToFitSize(image, SizeLimit));
     }
 }

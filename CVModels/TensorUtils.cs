@@ -33,6 +33,25 @@ namespace CVModels
             return input;
         }
 
+        internal static Tensor<float> ImageToCHWTensor(byte[] imageBytes)
+        {
+            using var image = SKBitmap.Decode(imageBytes);
+            Tensor<float> input = new DenseTensor<float>(new[] { 1, 3, image.Height, image.Width });
+
+            for (int y = 0; y < image.Height; y++)
+            {
+                for (int x = 0; x < image.Width; x++)
+                {
+                    var pixel = image.GetPixel(x, y);
+                    input[0, 0, y, x] = pixel.Red / 255f;
+                    input[0, 1, y, x] = pixel.Green / 255f;
+                    input[0, 2, y, x] = pixel.Blue / 255f;
+                }
+            }
+
+            return input;
+        }
+
         public static byte[] CHWTensorToImage(Tensor<float> tensor)
         {
             int height = tensor.Dimensions[2];

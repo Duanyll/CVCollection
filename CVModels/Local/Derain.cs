@@ -15,7 +15,7 @@ namespace CVModels.Local
         const int RequiredWidth = 480;
 
         protected override Task<byte[]> OnPreprocessImage(byte[] image)
-            => Task.Run(() => SkiaSharpUtils.ResizeToDesiredSize(image, RequiredWidth, RequiredHeight));
+            => Task.Run(() => SkiaSharpUtils.StretchToDesiredSize(image, RequiredWidth, RequiredHeight));
 
         protected override Task<byte[]> OnProcessImage(byte[] image, IProgress<string> progress)
             => Task.Run(() =>

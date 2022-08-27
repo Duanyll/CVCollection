@@ -82,10 +82,21 @@ public static class SkiaSharpUtils
         }
     }
 
-    public static byte[] ResizeToDesiredSize(byte[] image, int width, int height)
+    public static byte[] StretchToDesiredSize(byte[] image, int width, int height)
     {
         using var bitmap = SKBitmap.Decode(image);
         using var resized = bitmap.Resize(new SKImageInfo(width, height), SKFilterQuality.Medium);
+        return BitmapToBytes(resized);
+    }
+
+    public static byte[] ZoomToFitSize(byte[] image, int longestEdge)
+    {
+        using var bitmap = SKBitmap.Decode(image);
+        int width = bitmap.Width;
+        int height = bitmap.Height;
+        if (width < longestEdge && height < longestEdge) return image;
+        float ratio = (float)longestEdge / Math.Max(width, height);
+        using var resized = bitmap.Resize(new SKImageInfo((int)(width * ratio), (int)(height * ratio)), SKFilterQuality.Medium);
         return BitmapToBytes(resized);
     }
 }

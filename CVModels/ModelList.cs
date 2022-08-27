@@ -69,7 +69,9 @@ namespace CVModels
                     DisplayName = "Image Enhancement",
                     ModelType = ModelIOType.ImageProcessing,
                     IsLocal = false,
-                    Description = "Lorem ipsum."
+                    Description = "Lorem ipsum.",
+                    SampleImage = "zero_dce.jpg",
+                    Type = typeof(Local.ZeroDce)
                 }
             },
             {

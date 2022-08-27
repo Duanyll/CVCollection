@@ -8,14 +8,18 @@
 
   <ItemGroup>
     <None Remove="Local\OnnxPackages\derain_se.onnx" />
+    <None Remove="Local\OnnxPackages\zero_dce.onnx" />
     <None Remove="SampleImages\demoire.jpg" />
     <None Remove="SampleImages\derain.jpg" />
+    <None Remove="SampleImages\zero_dce.jpg" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Local\OnnxPackages\derain_se.onnx" />
+    <EmbeddedResource Include="Local\OnnxPackages\zero_dce.onnx" />
     <EmbeddedResource Include="SampleImages\demoire.jpg" />
     <EmbeddedResource Include="SampleImages\derain.jpg" />
+    <EmbeddedResource Include="SampleImages\zero_dce.jpg" />
   </ItemGroup>
 
   <ItemGroup>

@@ -56,9 +56,8 @@
                HorizontalOptions="Center"
                VerticalOptions="Center"
                IsVisible="{Binding IsBusy}"
-               MinimumWidthRequest="200"
                Padding="10">
-            <VerticalStackLayout>
+            <VerticalStackLayout MinimumWidthRequest="200">
                 <ActivityIndicator
                     IsEnabled="{Binding IsBusy}"
                     IsRunning="{Binding IsBusy}"
@@ -66,6 +65,5 @@
                 <Label Text="{Binding ProgressText}" HorizontalOptions="Center"/>
             </VerticalStackLayout>
         </Frame>
-        
     </Grid>
 </ContentPage>
