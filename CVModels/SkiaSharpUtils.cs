@@ -99,4 +99,16 @@ public static class SkiaSharpUtils
         using var resized = bitmap.Resize(new SKImageInfo((int)(width * ratio), (int)(height * ratio)), SKFilterQuality.Medium);
         return BitmapToBytes(resized);
     }
+
+    public static byte[] EncodeImageToJpeg(byte[] image)
+    {
+        using var bitmap = SKBitmap.Decode(image);
+        using var stream = new MemoryStream();
+        using var wstream = new SKManagedWStream(stream);
+
+        bitmap.Encode(wstream, SKEncodedImageFormat.Jpeg, 50);
+        var bytes = stream.ToArray();
+
+        return bytes;
+    }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.ML.OnnxRuntime.Tensors;
@@ -52,20 +53,34 @@ namespace CVModels
             return input;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        static byte FloatToByte(float x) => x switch
+        {
+            < 0 => 0,
+            > 1 => 0xFF,
+            _ => (byte)(x * 255)
+        };
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        static uint MakeRgba8888Pixel(float red, float green, float blue) =>
+            (uint)((0xFF << 24) | (FloatToByte(blue) << 16) | (FloatToByte(green) << 8) | FloatToByte(red));
+
         public static byte[] CHWTensorToImage(Tensor<float> tensor)
         {
             int height = tensor.Dimensions[2];
             int width = tensor.Dimensions[3];
 
-            using var bitmap = new SKBitmap(width, height);
-            byte clamp(float x) => (byte)(Math.Min(Math.Max(x, 0), 1) * 255);
-            for (int y = 0; y < height; y++)
+            using var bitmap = new SKBitmap(width, height, SKColorType.Rgba8888, SKAlphaType.Premul);
+
+            unsafe
             {
-                for (int x = 0; x < width; x++)
+                uint* pixels = (uint*)bitmap.GetPixels().ToPointer();
+                for (int y = 0; y < height; y++)
                 {
-                    var col = new SKColor(
-                        clamp(tensor[0, 0, y, x]), clamp(tensor[0, 1, y, x]), clamp(tensor[0, 2, y, x]));
-                    bitmap.SetPixel(x, y, col);
+                    for (int x = 0; x < width; x++)
+                    {
+                        *pixels++ = MakeRgba8888Pixel(tensor[0, 0, y, x], tensor[0, 1, y, x], tensor[0, 2, y, x]);
+                    }
                 }
             }
 

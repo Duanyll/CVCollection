@@ -3,51 +3,70 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using JsonSubTypes;
+using Newtonsoft.Json;
 using RestSharp;
+using RestSharp.Serializers.NewtonsoftJson;
 
 namespace CVModels.Remote
 {
     public abstract class RemoteImageProcessingModelBase : IImageProcessingModel
     {
-        const string BaseUrl = "http://localhost:8888";
+        const string BaseUrl = "http://localhost:2003";
         public string Name { get; }
         string RemoteModelName { get; }
         RestClient Client { get; }
 
-        class BaseResponse<T> where T : class
+        class BaseResponse
         {
-            public int Code { get; set; }
+            public virtual int Code { get; } = -1;
             public string Message { get; set; } = string.Empty;
-            public T Data { get; set; } = null;
-            public BaseResponse<T> EnsureSuccess()
+        }
+
+        class TokenData
+        {
+            public string Token { get; set; }
+        }
+
+        class SubmitResponse : BaseResponse
+        {
+            public override int Code => 0;
+            public TokenData Data { get; set; }
+        }
+
+        class PositionData
+        {
+            public int Position { get; set;  }
+        }
+
+        [JsonConverter(typeof(JsonSubtypes), nameof(Code))]
+        [JsonSubtypes.KnownSubType(typeof(Success), 0)]
+        [JsonSubtypes.KnownSubType(typeof(Executing), 1)]
+        [JsonSubtypes.KnownSubType(typeof(Waiting), 2)]
+        [JsonSubtypes.KnownSubType(typeof(Error), 3)]
+        class StatusResponse : BaseResponse
+        {
+            public class Success : StatusResponse
             {
-                if (Code != 0)
-                {
-                    throw new Exception($"Code {Code}: {Message}");
-                }
-                return this;
+                public override int Code => 0;
             }
-        }
 
-        class SubmitResponse
-        {
-            public string Token { get; set; } = string.Empty;
-        }
-        
-        class StatusRequest
-        {
-            public string Token { get; set; } = string.Empty;
-        }
+            public class Executing : StatusResponse
+            {
+                public override int Code => 1;
+            }
 
-        class StatusResponse
-        {
-            public int Status { get; set; }
-            public int Sequence { get; set; }
-        }
+            public class Waiting : StatusResponse
+            {
+                public override int Code => 2;
+                public PositionData Data { get; set;  }
+            }
 
-        class ResultRequest
-        {
-            public string Token { get; set; } = string.Empty;
+            public class Error : StatusResponse
+            {
+                public override int Code => 3;
+                public string Data { get; set;  }
+            }
         }
 
         protected RemoteImageProcessingModelBase(string name, string remoteModelName)
@@ -60,6 +79,7 @@ namespace CVModels.Remote
                 ThrowOnAnyError = true,
                 MaxTimeout = 5000
             });
+            Client.UseNewtonsoftJson();
         }
 
         protected abstract Task<byte[]> OnPreprocessImage(byte[] image);
@@ -71,23 +91,26 @@ namespace CVModels.Remote
 
         async Task<string> UploadImageAsync(byte[] image)
         {
-            var request = new RestRequest("submit/{model}");
+            var request = new RestRequest("{model}/submit");
             request.AddUrlSegment("model", RemoteModelName);
-            request.AddBody(image, "image/png");
-            return (await Client.PostAsync<BaseResponse<SubmitResponse>>(request)).EnsureSuccess().Data.Token;
+            request.AddBody(SkiaSharpUtils.EncodeImageToJpeg(image), "image/jpeg");
+            return (await Client.PostAsync<SubmitResponse>(request)).Data.Token;
         }
 
         async Task<StatusResponse> CheckStatusAsync(string token)
         {
-            var request = new RestRequest("status");
-            request.AddJsonBody(new StatusRequest { Token = token });
-            return (await Client.GetAsync<BaseResponse<StatusResponse>>(request)).EnsureSuccess().Data;
+            var request = new RestRequest("{model}/status");
+            request.AddUrlSegment("model", RemoteModelName);
+            request.AddJsonBody(new TokenData { Token = token });
+            return (await Client.PostAsync<StatusResponse>(request));
         }
 
         async Task<byte[]> DownloadImageAsync(string token)
         {
-            var request = new RestRequest("result");
-            request.AddJsonBody(new ResultRequest { Token = token });
+            var request = new RestRequest("{model}/result");
+            request.AddUrlSegment("model", RemoteModelName);
+            request.AddJsonBody(new TokenData { Token = token });
+            request.Method = Method.Post;
             return await Client.DownloadDataAsync(request);
         }
 
@@ -101,23 +124,25 @@ namespace CVModels.Remote
                 while (true)
                 {
                     var status = await CheckStatusAsync(token);
-                    if (status.Status != 0)
+                    switch (status)
                     {
-                        break;
+                        case StatusResponse.Success:
+                            progress.Report("Downloading");
+                            return await DownloadImageAsync(token);
+                        case StatusResponse.Executing:
+                            progress.Report("Processing");
+                            await Task.Delay(1000);
+                            break;
+                        case StatusResponse.Waiting res:
+                            progress.Report($"Waiting {res.Data.Position}");
+                            await Task.Delay(3000);
+                            break;
+                        case StatusResponse.Error res:
+                            throw new Exception(res.Message);
+                        default:
+                            throw new Exception("Unknown response code.");
                     }
-                    if (status.Sequence > 0)
-                    {
-                        progress.Report($"Pending, {status.Sequence} ahead.");
-                    }
-                    else
-                    {
-                        progress.Report($"Processing");
-                    }
-                    await Task.Delay(3000);
                 }
-
-                progress.Report("Downloading");
-                return await DownloadImageAsync(token);
             } 
             catch (Exception ex)
             {
