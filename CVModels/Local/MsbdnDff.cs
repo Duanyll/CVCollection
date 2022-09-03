@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace CVModels.Local
 {
-    internal class ZeroDce : IImageProcessingModel
+    internal class MsbdnDff : IImageProcessingModel
     {
-        ILocalSession Session { get; } = new EmbbededModelSession("zero_dce.onnx");
+        ILocalSession Session { get; } = new DownloadedModelSession("msbdn_dff.onnx", "CAA6D68E216376B9812BBF6A6E3451BE");
 
         const int SizeLimit = 800;
 
         public Task<byte[]> PreprocessImageAsync(byte[] image)
             => Task.Run(() => SkiaSharpUtils.ZoomToFitSize(image, SizeLimit));
-        
+
 
         public Task<byte[]> ProcessImageAsync(byte[] image, IProgress<string> progress) => Task.Run(() =>
         {

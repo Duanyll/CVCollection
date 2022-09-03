@@ -48,6 +48,8 @@ namespace CVModels
                     ModelType = ModelIOType.ImageProcessing,
                     IsLocal = false,
                     Description = "Remove haze from image",
+                    SampleImage = "msbdn_dff.png",
+                    Type = typeof(Local.MsbdnDff)
                 }
             },
             {

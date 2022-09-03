@@ -8,18 +8,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Local\OnnxPackages\derain_se.onnx" />
-    <None Remove="Local\OnnxPackages\zero_dce.onnx" />
+    <None Remove="Local\EmmbbedModels\derain_se.onnx" />
+    <None Remove="Local\EmmbbedModels\msbdn_dff.onnx" />
+    <None Remove="Local\EmmbbedModels\zero_dce.onnx" />
     <None Remove="SampleImages\demoire.jpg" />
     <None Remove="SampleImages\derain.jpg" />
+    <None Remove="SampleImages\msbdn_dff.png" />
     <None Remove="SampleImages\zero_dce.jpg" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Local\OnnxPackages\derain_se.onnx" />
-    <EmbeddedResource Include="Local\OnnxPackages\zero_dce.onnx" />
+    <EmbeddedResource Include="Local\EmmbbedModels\derain_se.onnx" />
+    <EmbeddedResource Include="Local\EmmbbedModels\zero_dce.onnx" />
     <EmbeddedResource Include="SampleImages\demoire.jpg" />
     <EmbeddedResource Include="SampleImages\derain.jpg" />
+    <EmbeddedResource Include="SampleImages\msbdn_dff.png" />
     <EmbeddedResource Include="SampleImages\zero_dce.jpg" />
   </ItemGroup>
 

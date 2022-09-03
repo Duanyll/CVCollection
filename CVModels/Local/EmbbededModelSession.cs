@@ -14,26 +14,31 @@ namespace CVModels.Local
         Platform
     }
 
-    public abstract class LocalModelBase : ILocalModel
+    internal class EmbbededModelSession : ILocalSession
     {
         byte[] _model;
-        string _name;
         string _modelName;
         Task _prevAsyncTask;
         InferenceSession _session;
         ExecutionProviderOptions _curExecutionProvider;
 
-        protected LocalModelBase(string name, string modelName)
+        public EmbbededModelSession(string modelName)
         {
-            _name = name;
             _modelName = modelName;
-            _ = InitializeAsync();
         }
 
-        public string Name => _name;
         public string ModelName => _modelName;
         public byte[] Model => _model;
-        public InferenceSession Session => _session;
+
+        public InferenceSession Instance
+        {
+            get
+            {
+                AwaitLastTaskAsync().Wait();
+                Initialize();
+                return _session;
+            }
+        }
 
         public async Task UpdateExecutionProviderAsync(ExecutionProviderOptions executionProvider)
         {
@@ -63,7 +68,7 @@ namespace CVModels.Local
             });
         }
 
-        public Task InitializeAsync()
+        public Task InitializeAsync(IProgress<int> progress = null)
         {
             _prevAsyncTask = Task.Run(() => Initialize());
             return _prevAsyncTask;
@@ -78,8 +83,9 @@ namespace CVModels.Local
             }
         }
 
-        void Initialize()
+        public void Initialize(IProgress<string> _ = null)
         {
+            if (_session != null) return;
             _model = ResourceLoader.GetEmbeddedResource(ModelName);
             _session = new InferenceSession(_model);  // default to CPU 
             _curExecutionProvider = ExecutionProviderOptions.CPU;

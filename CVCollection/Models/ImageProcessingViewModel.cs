@@ -59,6 +59,8 @@ namespace CVCollection.Models
         {
             modelInfo = ModelList.GetModelInfo(modelName);
             Title = modelInfo.DisplayName;
+            CVModels.Settings.RemoteProcessHost = Settings.Instance.RemoteProcessingHost;
+            CVModels.Settings.DownloadedModelFolder = Settings.Instance.DownloadedModelFolder;
 
             Command getInputCommand(Func<Task<byte[]>> getOriginalImage)
             {

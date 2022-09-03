@@ -14,5 +14,7 @@ public partial class AppShell : Shell
 		{
             Routing.RegisterRoute("models/imageProcessing", typeof(Models.ImageProcessingPageLandscape));
         }
+
+		Routing.RegisterRoute("settings", typeof(SettingsPage));
     }
 }

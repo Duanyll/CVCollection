@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:CVCollection"
+             x:Class="CVCollection.SettingsPage"
+             x:DataType="local:SettingsViewModel"
+             Title="{Binding Title}">
+    <TableView Intent="Settings">
+        <TableRoot>
+            <TableSection Title="Networking">
+                <EntryCell Label="Process Host" Text="{Binding Instance.RemoteProcessingHost}"/>
+                <EntryCell Label="Download Host" Text="{Binding Instance.ModelDownloadHost}"/>
+            </TableSection>
+            <TableSection Title="Actions">
+                <TextCell Text="Ping Process Host" Detail="{Binding Instance.RemoteProcessingHost}" Command="{Binding PingProcessServerCommand}"/>
+                <TextCell Text="Delete Downloaded Models" Command="{Binding DeleteDownloadedModelCommand}"/>
+            </TableSection>
+        </TableRoot>
+    </TableView>
+</ContentPage>

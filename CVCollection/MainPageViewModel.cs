@@ -19,6 +19,7 @@ namespace CVCollection
     {
         public IEnumerable<ModelGroup> Groups { get; }
         public Command<ModelInfo> OpenModelCommand { get; }
+        public Command OpenSettingsCommand { get; }
         public MainPageViewModel()
         {
             Title = "CVCollection";
@@ -50,6 +51,13 @@ namespace CVCollection
                     App.AlertSvc.ShowAlert("Oops", ex.Message);
                 }
             });
+
+            OpenSettingsCommand = new Command(async () =>
+            {
+                await Shell.Current.GoToAsync("settings");
+            });
+
+            CVModels.Settings.ModelDownloadingHost = Settings.Instance.ModelDownloadHost;
         }
     }
 }

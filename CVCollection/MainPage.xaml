@@ -7,6 +7,10 @@
              x:DataType="local:MainPageViewModel"
              Title="{Binding Title}">
 
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Settings" Command="{Binding OpenSettingsCommand}" IconImageSource="settings.png"/>
+    </ContentPage.ToolbarItems>
+
     <CollectionView ItemsSource="{Binding Groups}" IsGrouped="True">
         <CollectionView.GroupHeaderTemplate>
             <DataTemplate x:DataType="local:ModelGroup">
