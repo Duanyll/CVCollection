@@ -34,7 +34,7 @@ namespace CVModels
             return input;
         }
 
-        internal static Tensor<float> ImageToCHWTensor(byte[] imageBytes)
+        public static Tensor<float> ImageToCHWTensor(byte[] imageBytes)
         {
             using var image = SKBitmap.Decode(imageBytes);
             Tensor<float> input = new DenseTensor<float>(new[] { 1, 3, image.Height, image.Width });
@@ -53,6 +53,31 @@ namespace CVModels
             return input;
         }
 
+        public static Tensor<float> ImageToCHWTensorPadToMultiples(byte[] imageBytes, int factor, out int origHeight, out int origWidth)
+        {
+            using var image = SKBitmap.Decode(imageBytes);
+            origHeight = image.Height;
+            origWidth = image.Width;
+            int resHeight = (image.Height + factor - 1) / factor * factor;
+            int resWidth = (image.Width + factor - 1) / factor * factor;
+            Tensor<float> input = new DenseTensor<float>(new[] { 1, 3, resHeight, resWidth });
+            for (int y = 0; y < resHeight; y++)
+            {
+                for (int x = 0; x < resWidth; x++)
+                {
+                    int patternX = x % (image.Height * 2);
+                    int patternY = y % (image.Width * 2);
+                    int flipX = (patternX < image.Height) ? patternX : (image.Height * 2 - patternX - 1);
+                    int flipY = (patternY < image.Width) ? patternY : (image.Width * 2 - patternY - 1);
+                    var pixel = image.GetPixel(flipX, flipY);
+                    input[0, 0, y, x] = pixel.Red / 255f;
+                    input[0, 1, y, x] = pixel.Green / 255f;
+                    input[0, 2, y, x] = pixel.Blue / 255f;
+                }
+            }
+            return input;
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         static byte FloatToByte(float x) => x switch
         {
@@ -65,11 +90,8 @@ namespace CVModels
         static uint MakeRgba8888Pixel(float red, float green, float blue) =>
             (uint)((0xFF << 24) | (FloatToByte(blue) << 16) | (FloatToByte(green) << 8) | FloatToByte(red));
 
-        public static byte[] CHWTensorToImage(Tensor<float> tensor)
+        public static byte[] CHWTensorToImage(Tensor<float> tensor, int height, int width)
         {
-            int height = tensor.Dimensions[2];
-            int width = tensor.Dimensions[3];
-
             using var bitmap = new SKBitmap(width, height, SKColorType.Rgba8888, SKAlphaType.Premul);
 
             unsafe
@@ -85,6 +107,11 @@ namespace CVModels
             }
 
             return SkiaSharpUtils.BitmapToBytes(bitmap);
+        }
+
+        public static byte[] CHWTensorToImage(Tensor<float> tensor)
+        {
+            return CHWTensorToImage(tensor, tensor.Dimensions[2], tensor.Dimensions[3]);
         }
     }
 }

@@ -46,21 +46,23 @@ namespace CVModels
                     Name = "Dehaze",
                     DisplayName = "Image Dehazing",
                     ModelType = ModelIOType.ImageProcessing,
-                    IsLocal = false,
+                    IsLocal = true,
                     Description = "Remove haze from image",
                     SampleImage = "msbdn_dff.png",
                     Type = typeof(Local.MsbdnDff)
                 }
             },
             {
-                "Restore",
+                "Denoise",
                 new ModelInfo()
                 {
-                    Name = "Restore",
-                    DisplayName = "Image Restoration",
+                    Name = "Denoise",
+                    DisplayName = "Image Denoising",
                     ModelType = ModelIOType.ImageProcessing,
                     IsLocal = false,
-                    Description = "Lorem ipsum."
+                    Description = "Lorem ipsum.",
+                    SampleImage = "mprnet_denoise.jpg",
+                    Type = typeof(Remote.MprNetDenoise)
                 }
             },
             {
@@ -70,7 +72,7 @@ namespace CVModels
                     Name = "Enhance",
                     DisplayName = "Image Enhancement",
                     ModelType = ModelIOType.ImageProcessing,
-                    IsLocal = false,
+                    IsLocal = true,
                     Description = "Lorem ipsum.",
                     SampleImage = "zero_dce.jpg",
                     Type = typeof(Local.ZeroDce)

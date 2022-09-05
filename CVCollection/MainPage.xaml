@@ -8,7 +8,8 @@
              Title="{Binding Title}">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Settings" Command="{Binding OpenSettingsCommand}" IconImageSource="settings.png"/>
+        <ToolbarItem Text="Settings" Command="{Binding OpenSettingsCommand}" 
+                     IconImageSource="{x:AppThemeBinding Light=settings_light.png Dark=settings_dark.png}"/>
     </ContentPage.ToolbarItems>
 
     <CollectionView ItemsSource="{Binding Groups}" IsGrouped="True">

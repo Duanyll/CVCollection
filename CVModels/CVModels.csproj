@@ -13,6 +13,7 @@
     <None Remove="Local\EmmbbedModels\zero_dce.onnx" />
     <None Remove="SampleImages\demoire.jpg" />
     <None Remove="SampleImages\derain.jpg" />
+    <None Remove="SampleImages\mprnet_denoise.jpg" />
     <None Remove="SampleImages\msbdn_dff.png" />
     <None Remove="SampleImages\zero_dce.jpg" />
   </ItemGroup>
@@ -22,6 +23,7 @@
     <EmbeddedResource Include="Local\EmmbbedModels\zero_dce.onnx" />
     <EmbeddedResource Include="SampleImages\demoire.jpg" />
     <EmbeddedResource Include="SampleImages\derain.jpg" />
+    <EmbeddedResource Include="SampleImages\mprnet_denoise.jpg" />
     <EmbeddedResource Include="SampleImages\msbdn_dff.png" />
     <EmbeddedResource Include="SampleImages\zero_dce.jpg" />
   </ItemGroup>
