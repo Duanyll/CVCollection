@@ -44,6 +44,13 @@ namespace CVModels.Local
             }
         }
 
+        void LoadSession(byte[] model)
+        {
+            var options = new SessionOptions();
+            options.RegisterCustomOpLibraryV2("Platforms/Windows/MmcvOnnxOps.dll", out var handle);
+            _session = new InferenceSession(model, options);
+        }
+
         public void Initialize(IProgress<string> progress = null)
         {
             if (_session == null)
@@ -56,7 +63,7 @@ namespace CVModels.Local
                     model = File.ReadAllBytes(localFile);
                     if (ValidateFileHash(model))
                     {
-                        _session = new InferenceSession(model);
+                        LoadSession(model);
                         return;
                     }
                 }
@@ -71,7 +78,7 @@ namespace CVModels.Local
                 model = File.ReadAllBytes(localFile);
                 if (ValidateFileHash(model))
                 {
-                    _session = new InferenceSession(model);
+                    LoadSession(model);
                 } 
                 else
                 {

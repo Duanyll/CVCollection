@@ -14,7 +14,7 @@ namespace CVModels.Remote
     {
         string BaseUrl => Settings.RemoteProcessHost;
         public string Name { get; }
-        string RemoteModelName { get; }
+        string RemoteModelPath { get; }
         RestClient Client { get; }
 
         class BaseResponse
@@ -69,13 +69,13 @@ namespace CVModels.Remote
             }
         }
 
-        protected RemoteImageProcessingModelBase(string name, string remoteModelName)
+        protected RemoteImageProcessingModelBase(string name, string remoteModelPath)
         {
             Name = name;
-            RemoteModelName = remoteModelName;
+            RemoteModelPath = remoteModelPath;
             Client = new RestClient(new RestClientOptions
             {
-                BaseUrl = new Uri(BaseUrl),
+                BaseUrl = new Uri(new Uri(BaseUrl), remoteModelPath),
                 ThrowOnAnyError = true,
                 MaxTimeout = 5000
             });
@@ -91,24 +91,24 @@ namespace CVModels.Remote
 
         async Task<string> UploadImageAsync(byte[] image)
         {
-            var request = new RestRequest("{model}/submit");
-            request.AddUrlSegment("model", RemoteModelName);
+            var request = new RestRequest("submit");
+            request.AddUrlSegment("model", RemoteModelPath);
             request.AddBody(SkiaSharpUtils.EncodeImageToJpeg(image), "image/jpeg");
             return (await Client.PostAsync<SubmitResponse>(request)).Data.Token;
         }
 
         async Task<StatusResponse> CheckStatusAsync(string token)
         {
-            var request = new RestRequest("{model}/status");
-            request.AddUrlSegment("model", RemoteModelName);
+            var request = new RestRequest("status");
+            request.AddUrlSegment("model", RemoteModelPath);
             request.AddJsonBody(new TokenData { Token = token });
             return (await Client.PostAsync<StatusResponse>(request));
         }
 
         async Task<byte[]> DownloadImageAsync(string token)
         {
-            var request = new RestRequest("{model}/result");
-            request.AddUrlSegment("model", RemoteModelName);
+            var request = new RestRequest("result");
+            request.AddUrlSegment("model", RemoteModelPath);
             request.AddJsonBody(new TokenData { Token = token });
             request.Method = Method.Post;
             return await Client.DownloadDataAsync(request);

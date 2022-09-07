@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace CVModels.Remote
 {
-    internal class MprNetDenoise : RemoteImageProcessingModelBase
+    internal class MprNetDeblur : RemoteImageProcessingModelBase
     {
-        public MprNetDenoise() : base("MprNetDenoise", "mprnet/denoise")
+        public MprNetDeblur() : base("MprNetDeblur", "mprnet/deblur")
         {
         }
 

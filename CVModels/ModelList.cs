@@ -66,6 +66,32 @@ namespace CVModels
                 }
             },
             {
+                "DenoiseSadNet",
+                new ModelInfo()
+                {
+                    Name = "DenoiseSadNet",
+                    DisplayName = "Image Denoising SadNet",
+                    ModelType = ModelIOType.ImageProcessing,
+                    IsLocal = true,
+                    Description = "Lorem ipsum.",
+                    SampleImage = "mprnet_denoise.jpg",
+                    Type = typeof(Local.SadNet)
+                }
+            },
+            {
+                "Deblur",
+                new ModelInfo()
+                {
+                    Name = "Deblur",
+                    DisplayName = "Image Deblurring",
+                    ModelType = ModelIOType.ImageProcessing,
+                    IsLocal = false,
+                    Description = "MprNet",
+                    SampleImage = "mprnet_denoise.jpg",
+                    Type = typeof(Remote.MprNetDeblur)
+                }
+            },
+            {
                 "Enhance",
                 new ModelInfo()
                 {

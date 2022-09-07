@@ -65,10 +65,10 @@ namespace CVModels
             {
                 for (int x = 0; x < resWidth; x++)
                 {
-                    int patternX = x % (image.Height * 2);
-                    int patternY = y % (image.Width * 2);
-                    int flipX = (patternX < image.Height) ? patternX : (image.Height * 2 - patternX - 1);
-                    int flipY = (patternY < image.Width) ? patternY : (image.Width * 2 - patternY - 1);
+                    int patternX = x % (image.Width * 2);
+                    int patternY = y % (image.Height * 2);
+                    int flipX = (patternX < image.Width) ? patternX : (image.Width * 2 - patternX - 1);
+                    int flipY = (patternY < image.Height) ? patternY : (image.Height * 2 - patternY - 1);
                     var pixel = image.GetPixel(flipX, flipY);
                     input[0, 0, y, x] = pixel.Red / 255f;
                     input[0, 1, y, x] = pixel.Green / 255f;
