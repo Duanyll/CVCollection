@@ -40,6 +40,19 @@ namespace CVModels
                 }
             },
             {
+                "DerainQuant",
+                new ModelInfo()
+                {
+                    Name = "DerainQuant",
+                    DisplayName = "Image Deraining Quant",
+                    ModelType = ModelIOType.ImageProcessing,
+                    IsLocal = true,
+                    Description = "Removes rain streaks from image",
+                    SampleImage = "derain.jpg",
+                    Type = typeof(Local.DerainQuant)
+                }
+            },
+            {
                 "Dehaze",
                 new ModelInfo()
                 {

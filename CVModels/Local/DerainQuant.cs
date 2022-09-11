@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace CVModels.Local
 {
-    public class Derain : IImageProcessingModel
+    public class DerainQuant : IImageProcessingModel
     {
-        ILocalSession Session { get; } = new EmbbededModelSession("derain_se.onnx");
+        ILocalSession Session { get; } = new EmbbededModelSession("derain_se_quant.onnx");
         
         const int RequiredHeight = 320;
         const int RequiredWidth = 480;

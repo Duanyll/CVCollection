@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
@@ -87,7 +88,12 @@ namespace CVModels.Local
         {
             if (_session != null) return;
             _model = ResourceLoader.GetEmbeddedResource(ModelName);
-            _session = new InferenceSession(_model);  // default to CPU 
+            var options = new SessionOptions();
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+            {
+                options.RegisterCustomOpLibraryV2("Platforms/Windows/MmcvOnnxOps.dll", out var handle);
+            }
+            _session = new InferenceSession(_model, options);
             _curExecutionProvider = ExecutionProviderOptions.CPU;
         }
     }

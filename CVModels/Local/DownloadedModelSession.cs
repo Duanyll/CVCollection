@@ -47,7 +47,10 @@ namespace CVModels.Local
         void LoadSession(byte[] model)
         {
             var options = new SessionOptions();
-            options.RegisterCustomOpLibraryV2("Platforms/Windows/MmcvOnnxOps.dll", out var handle);
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+            {
+                options.RegisterCustomOpLibraryV2("Platforms/Windows/MmcvOnnxOps.dll", out var handle);
+            }
             _session = new InferenceSession(model, options);
         }
 

@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <None Remove="Local\EmmbbedModels\derain_se.onnx" />
+    <None Remove="Local\EmmbbedModels\derain_se_quant.onnx" />
     <None Remove="Local\EmmbbedModels\msbdn_dff.onnx" />
     <None Remove="Local\EmmbbedModels\zero_dce.onnx" />
     <None Remove="SampleImages\demoire.jpg" />
@@ -20,6 +21,7 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Local\EmmbbedModels\derain_se.onnx" />
+    <EmbeddedResource Include="Local\EmmbbedModels\derain_se_quant.onnx" />
     <EmbeddedResource Include="Local\EmmbbedModels\zero_dce.onnx" />
     <EmbeddedResource Include="SampleImages\demoire.jpg" />
     <EmbeddedResource Include="SampleImages\derain.jpg" />

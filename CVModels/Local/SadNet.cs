@@ -1,6 +1,7 @@
 ﻿using Microsoft.ML.OnnxRuntime;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,7 +32,10 @@ namespace CVModels.Local
             progress?.Report("Inferencing");
 
             // Run inference
+            var stopwatch = Stopwatch.StartNew();
             using IDisposableReadOnlyCollection<DisposableNamedOnnxValue> results = Session.Instance.Run(inputs);
+            stopwatch.Stop();
+            Debug.WriteLine($">>> {origH}x{origW} {stopwatch.ElapsedMilliseconds}ms <<<");
 
             progress?.Report("Done");
 
